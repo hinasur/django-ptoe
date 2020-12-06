@@ -1,0 +1,45 @@
+version: '3.2'
+    
+services:
+  db:
+    image: postgres:12.3-alpine
+    container_name: 'django_db_ptoe'
+    expose: 
+      - "5432"
+    environment:
+      - TZ=Asia/Tokyo
+      - POSTGRES_DB=postgres
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+    volumes:
+      - ../db/database:/var/lib/postgresql/data
+      - ../db/init:/docker-entrypoint-initdb.d  
+  nginx:
+    image: nginx:1.17.7
+    build: ./nginx
+    container_name: 'django_nginx_ptoe'
+    ports:
+      - "80:80"
+    volumes:
+      - ./web/gunicorn.conf:/etc/nginx/conf.d/default.conf
+      - ../gunicorn:/var/run/gunicorn
+      - ../web:/home/user1/dev
+  web:
+    image: django-gunicorn/web:1.0
+    build: ./web
+    container_name: 'django-gunicorn_web_ptoe'
+    ports:
+      - 8000:8000
+    environment:
+      - DEBUG=1
+    depends_on:
+      - db
+    stdin_open: true
+    tty: true
+    ports:
+      - 8000:8000
+    volumes:
+      - ../web:/home/user1/dev
+      - ../gunicorn:/var/run/gunicorn
+    command: bash -c "cd /home/user1/dev/ && gunicorn myprj.wsgi --bind=unix:/var/run/gunicorn/gunicorn.sock"
+ 
