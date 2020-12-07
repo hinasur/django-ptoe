@@ -60,17 +60,29 @@
     <ul class="navbar-nav ml-auto">
       
       <!-- TODO:Make href -->
+      {% if user.is_authenticated %}
+
       <li class="nav-item">
         <a class="nav-link" data-toggle="dropdown" href="#">
-          <i>ユーザー名：</i>
+          <i>ユーザー名：{{ user.get_username }}</i>
         </a>
       </li>
       
       <li class="nav-item">
-        <a class="nav-link" href="#">
+        <a class="nav-link" href="{% url 'accounts:logout' %}">
           <i class="fa-sign-out">ログアウト</i>
         </a>
       </li>
+
+      {% else %}
+
+      <li class="nav-item">
+        <a class="nav-link" href="{% url 'accounts:login' %}">
+          <i class="fa-sign-out">ログイン</i>
+        </a>
+      </li>
+
+      {% endif %}
 
       <li class="nav-item">
         <a class="nav-link" data-widget="control-sidebar" data-slide="true" href="#" role="button">

@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseRedirect
 from django.utils import timezone
 from .models import Post
 from django.shortcuts import render, get_object_or_404
@@ -8,7 +8,10 @@ from django.shortcuts import render, get_object_or_404
 def index(request):
   posts = Post.objects.filter(published_date__lte=timezone.now()).order_by('published_date')
   # return HttpResponse(f'hello world')
-  return render(request, 'main/index.html', {'posts': posts})
+  if request.user.is_authenticated:
+    return render(request, 'main/index.html', {'posts': posts})
+  else:
+    return HttpResponseRedirect("accounts/login")
 
 def post_detail(request, pk):
   post = get_object_or_404(Post, pk=pk)
