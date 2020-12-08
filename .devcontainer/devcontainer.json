@@ -4,7 +4,13 @@
   "service": "web",
   "workspaceFolder": "/home/user1/dev",
   "extensions": [
-    "ms-python.python"
+    "ms-python.python",
+    "formulahendry.auto-rename-tag",
+    "mderwat.indent-rainbow",
+    "christian-kohler.path-intellisense",
+    "zignd.html-css-class-completion",
+    "pranaygp.vscode-css-peek",
+    "batisteo.vscode-django"
   ],
   "settings": {
     "editor.tabSize": 2,
