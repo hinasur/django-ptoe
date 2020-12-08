@@ -41,5 +41,5 @@ services:
     volumes:
       - ../web:/home/user1/dev
       - ../gunicorn:/var/run/gunicorn
-    command: bash -c "cd /home/user1/dev/ && gunicorn myprj.wsgi --bind=unix:/var/run/gunicorn/gunicorn.sock"
+    command: bash -c "cd /home/user1/dev/ && gunicorn myprj.wsgi --bind=unix:/var/run/gunicorn/gunicorn.sock --reload -D"
  
