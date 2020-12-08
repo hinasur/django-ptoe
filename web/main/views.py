@@ -15,16 +15,10 @@ import shutil, os
 
 # Create your views here.
 def index(request):
-  posts = Post.objects.filter(published_date__lte=timezone.now()).order_by('published_date')
-  # return HttpResponse(f'hello world')
   if request.user.is_authenticated:
-    return render(request, 'main/index.html', {'posts': posts})
+    return render(request, 'main/index.html')
   else:
     return HttpResponseRedirect("accounts/login")
-
-def post_detail(request, pk):
-  post = get_object_or_404(Post, pk=pk)
-  return render(request, 'main/post_detail.html', {'post': post})
 
 class UploadView(LoginRequiredMixin, generic.FormView):
   form_class = UploadForm
@@ -54,5 +48,5 @@ class UploadView(LoginRequiredMixin, generic.FormView):
     }
     return render(self.request, 'main/complete.html', context)
 
-  def form_imvalid(self, form):
+  def form_invalid(self, form):
       return render(self.request, 'main/upload.html', {'form': form})

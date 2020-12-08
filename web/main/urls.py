@@ -5,6 +5,5 @@ app_name = "main"
 
 urlpatterns = [
   path('', views.index, name='index'),
-  path('post/<int:pk>/', views.post_detail, name='post_detail'),
   path('upload/', views.UploadView.as_view(), name='upload'),
 ]
