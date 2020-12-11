@@ -50,3 +50,15 @@ class UploadView(LoginRequiredMixin, generic.FormView):
 
   def form_invalid(self, form):
       return render(self.request, 'main/upload.html', {'form': form})
+
+class ListView(LoginRequiredMixin, generic.TemplateView):
+
+  template_name = 'main/list.html'
+
+  def get_context_data(self, **kwargs):
+    # 継承先のメソッドを呼び出す
+    context = super().get_context_data(**kwargs)
+    # context[""] = 
+    login_uset_name = self.request.user.username
+    return context
+  
