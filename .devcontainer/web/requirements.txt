@@ -6,4 +6,3 @@ django-upload-validator
 pdfminer.six
 django-widgets-improved
 openpyxl
-libmagic-dev

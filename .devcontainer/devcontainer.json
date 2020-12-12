@@ -10,7 +10,8 @@
     "christian-kohler.path-intellisense",
     "zignd.html-css-class-completion",
     "pranaygp.vscode-css-peek",
-    "batisteo.vscode-django"
+    "batisteo.vscode-django",
+    "ms-python.vscode-pylance"
   ],
   "settings": {
     "editor.tabSize": 2,

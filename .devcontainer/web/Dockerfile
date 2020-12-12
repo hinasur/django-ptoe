@@ -3,7 +3,8 @@ FROM python:3.8-slim
 
 # パッケージのインストール
 RUN apt-get update && apt-get install -y \
-    tzdata vim\
+    tzdata vim \
+    libmagic1 \
  && rm -rf /var/lib/apt/lists/*
 
 # モジュールのインストール
