@@ -11,7 +11,7 @@
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
-            <h1 class="m-0 text-dark">一覧画面</h1>
+            <h1 class="m-0 text-dark">ファイル削除完了</h1>
           </div><!-- /.col -->
           <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right">
@@ -38,7 +38,7 @@
             <!-- .card-header -->
             <div class="card-header">
               <div class="card-title">
-               <h3><b>生成済みExcelファイル一覧</b></h3>
+               <h3><b>選択したExcelファイル削除が完了しました。</b></h3>
               </div>
             </div>
             <!-- /.card-header -->
@@ -47,34 +47,18 @@
             <div class="card-body">
               <div class="form-group">
                 <hr>
-              <!--ここから下を新規追加 -->
-              <form action='{% url 'main:dell_file' %}' name="form" method="post">
-                {% csrf_token %}
-                <label>
-                  <input type="checkbox" name="all" onClick="AllChecked();" />全て選択
-                </label><br>
-                <!--ここまでを新規追加 -->
+                <b>選択したファイル一覧</b><br>
+                <ul class="list-group">
+                  {% for file in checks_value %}
+                  <li class="list-group-item alert alert-success alert-dismissable" role="alert">
+                    {{ file }}
+                  </li>
+                  {% endfor %}
+                </ul>
 
-                {% for file in file_list %}
-                <label>
-                  <input type="checkbox" name="checks" value="{{file}}" onClick="DisChecked();" />
-                  <a href="http://127.0.0.1/media/excel/{{login_user_name}}/{{file}}">{{file}}</a>
-                </label>
-                <br> 
-                {% endfor %}
-                <!--ここから下を新規追加 -->
-                <input type="submit" id="button" name="button"  class="btn btn-sm btn-danger" value="削除">
-              </form>
-              {% if warning_message %}
-              <hr>
-              <div class="alert alert-warning alert-dismissible" role="alert">
-                <p>{{warning_message}}</p>
-              </div>
-              {% endif %}
-              <hr>
-              <!--ここまでを新規追加 -->
                 <div class="text-center">
                   <a href="{% url 'main:index' %}" class="btn btn-primary btn-sm" role="button">戻る</a>
+                  <a href="{% url 'main:list' %}" class="btn btn-primary btn-sm" role="button">一覧表示画面へ</a>
                 </div>
               </div>
             </div>

@@ -10,6 +10,7 @@ from django.views import generic
 from .utils import create_excel
 from django.conf import settings
 from django.core.files.storage import default_storage
+from django.contrib.auth.decorators import login_required
 
 import shutil, os
 
@@ -59,6 +60,43 @@ class ListView(LoginRequiredMixin, generic.TemplateView):
     # 継承先のメソッドを呼び出す
     context = super().get_context_data(**kwargs)
     # context[""] = 
-    login_uset_name = self.request.user.username
+    """自分が作成したExcelだけ表示"""
+    login_user_name = self.request.user.username
+    if not default_storage.exists(os.path.join(settings.MEDIA_ROOT, "excel", login_user_name)):
+      warning_message = "このユーザーでは一度もファイル作成が行われていません。"
+      context = {
+        'warning_message': warning_message,
+      }
+      return context
+    file_list = default_storage.listdir(os.path.join(settings.MEDIA_ROOT, "excel", login_user_name))[1]
+    context = {
+      'file_list': file_list,
+      'login_user_name': login_user_name,
+    }
     return context
-  
+
+@login_required
+def dell_file(request):
+  #CheckBox=Onのファイル名を取得
+  checks_value = request.POST.getlist('checks')
+  #ログインユーザー名を取得
+  login_user_name = request.user.username
+
+  #Excelファイルの格納パスを取得
+  if checks_value:
+    for file in checks_value:
+      path = os.path.join(settings.MEDIA_ROOT, "excel", login_user_name, file)
+      #CheckBox=ONのファイルをサーバから削除
+      default_storage.delete(path)
+    return render(request, 'main/delete.html', {'checks_value': checks_value})
+  else:
+    login_user_name = request.user.username
+    file_list = default_storage.listdir(os.path.join(settings.MEDIA_ROOT, "excel", login_user_name))[1]
+    warning_message = "削除対象ファイルが選択されていません。"
+
+    context = {
+      'file_list': file_list,
+      'login_user_name': login_user_name,
+      'warning_message': warning_message,
+    }
+    return render(request, 'main/list.html', context)
